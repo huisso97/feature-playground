@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useGetPostsQuery } from "@/query/post";
 import Link from "next/link";
+import { useReactToPrint } from "react-to-print";
 import "./post-list.css";
 
 interface Post {
@@ -17,8 +18,11 @@ const PostList = () => {
   const [nextTitle, setNextTitle] = useState<string | null>(null);
   const [animateOut, setAnimateOut] = useState(false);
   const [animateIn, setAnimateIn] = useState(false);
-  const [intersectingPostId, setIntersectingPostId] = useState<number | null>(null);
+  const [intersectingPostId, setIntersectingPostId] = useState<number | null>(
+    null
+  );
   const observer = useRef<IntersectionObserver | null>(null);
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -60,21 +64,39 @@ const PostList = () => {
     };
   }, [data]);
 
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+  });
+
   return (
     <div className="flex flex-col h-full">
       <div className="sticky top-0 z-10 p-4 bg-gray-200">
         <div className="relative">
-          <h1 className={`text-xl font-bold ${animateOut ? "animate-title-out" : ""}`}>
+          <h1
+            className={`text-xl font-bold ${
+              animateOut ? "animate-title-out" : ""
+            }`}
+          >
             {currentTitle}
           </h1>
           {nextTitle && (
-            <h1 className={`text-xl font-bold absolute top-0 left-0 ${animateIn ? "animate-title-in" : ""}`}>
+            <h1
+              className={`text-xl font-bold absolute top-0 left-0 ${
+                animateIn ? "animate-title-in" : ""
+              }`}
+            >
               {nextTitle}
             </h1>
           )}
         </div>
+        <button
+          onClick={handlePrint}
+          className="p-2 mt-2 text-white bg-blue-500 rounded"
+        >
+          Print
+        </button>
       </div>
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto" ref={printRef}>
         <ul className="post-list">
           {data?.map((post: Post) => (
             <li
@@ -85,6 +107,9 @@ const PostList = () => {
               data-id={post.id}
               data-title={post.title}
             >
+              <div className="print-header">
+                <h1 className="text-xl font-bold">{currentTitle}</h1>
+              </div>
               <Link href={`/posts/${post.id}`} className="post-link">
                 <h2 className="post-title">{post.title}</h2>
                 <p className="post-body">{post.body}</p>
