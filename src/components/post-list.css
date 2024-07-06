@@ -1,33 +1,53 @@
-@keyframes fadeSlideOut {
-  0% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(20%);
-  }
-}
-
-@keyframes fadeSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-20%);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
+/* 기존 CSS 코드 */
 
 /* 애니메이션 클래스 정의 */
-.animate-title {
+.animate-title-out {
   transition: opacity 0.5s ease-in-out;
   opacity: 0;
 }
 
-.animate-next-title {
-
+.animate-title-in {
   transition: opacity 0.5s ease-in-out;
   opacity: 1;
+}
+
+/* 모던한 스타일 추가 */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* 화면 높이만큼 설정 */
+  padding: 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.3s ease;
+}
+
+.post-item:hover {
+  background-color: #f0f0f0;
+}
+
+.post-link {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+}
+
+.post-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.post-body {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
 }
