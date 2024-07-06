@@ -9,20 +9,19 @@ import "./post-list.css";
 interface Post {
   id: number;
   title: string;
-  body: string; // body 필드 추가
+  body: string;
 }
 
 const PostList = () => {
   const { data, isLoading, error } = useGetPostsQuery();
   const [currentTitle, setCurrentTitle] = useState("Post List");
-  const [nextTitle, setNextTitle] = useState<string | null>(null);
-  const [animateOut, setAnimateOut] = useState(false);
-  const [animateIn, setAnimateIn] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [intersectingPostId, setIntersectingPostId] = useState<number | null>(
     null
   );
   const observer = useRef<IntersectionObserver | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -32,18 +31,17 @@ const PostList = () => {
           if (postId) {
             setIntersectingPostId(Number(postId));
             const postTitle = entry.target.getAttribute("data-title");
-            if (postTitle) {
-              setNextTitle(postTitle);
-              setAnimateOut(true);
-              setTimeout(() => {
-                setAnimateOut(false);
+            if (postTitle && postTitle !== currentTitle) {
+              setIsTransitioning(true);
+
+              if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+              }
+
+              timeoutRef.current = setTimeout(() => {
                 setCurrentTitle(postTitle);
-                setAnimateIn(true);
-                setTimeout(() => {
-                  setAnimateIn(false);
-                  setNextTitle(null);
-                }, 500); // 애니메이션을 500ms 동안 유지
-              }, 500); // 애니메이션을 500ms 동안 유지
+                setIsTransitioning(false);
+              }, 300); // 트랜지션 시간과 일치
             }
           }
         }
@@ -61,33 +59,38 @@ const PostList = () => {
 
     return () => {
       observer.current?.disconnect();
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
-  }, [data]);
+  }, [data, currentTitle]);
 
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
+    pageStyle: `
+      @media print {
+        .print-header {
+          display: block;
+        }
+      }
+    `,
   });
 
   return (
     <div className="flex flex-col h-full">
       <div className="sticky top-0 z-10 p-4 bg-gray-200">
-        <div className="relative">
+        <div className="relative h-8">
+          {" "}
+          {/* 고정 높이 추가 */}
           <h1
-            className={`text-xl font-bold ${
-              animateOut ? "animate-title-out" : ""
+            className={`text-xl font-bold absolute transition-all duration-300 ${
+              isTransitioning
+                ? "opacity-0 -translate-x-2"
+                : "opacity-100 translate-x-0"
             }`}
           >
             {currentTitle}
           </h1>
-          {nextTitle && (
-            <h1
-              className={`text-xl font-bold absolute top-0 left-0 ${
-                animateIn ? "animate-title-in" : ""
-              }`}
-            >
-              {nextTitle}
-            </h1>
-          )}
         </div>
         <button
           onClick={handlePrint}
@@ -103,12 +106,12 @@ const PostList = () => {
               key={post.id}
               className={`post-item ${
                 intersectingPostId === post.id ? "bg-yellow-200" : ""
-              }`} // 높이 조정 및 스타일 추가
+              }`}
               data-id={post.id}
               data-title={post.title}
             >
-              <div className="print-header">
-                <h1 className="text-xl font-bold">{currentTitle}</h1>
+              <div className="print-header" style={{ display: "none" }}>
+                <h1 className="text-xl font-bold">{post.title}</h1>
               </div>
               <Link href={`/posts/${post.id}`} className="post-link">
                 <h2 className="post-title">{post.title}</h2>
