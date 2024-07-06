@@ -20,6 +20,14 @@
   }
 }
 
+/* 애니메이션 클래스 정의 */
 .animate-title {
-  animation: fadeSlideOut 0.3s forwards, fadeSlideIn 0.3s 0.3s forwards;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+
+.animate-next-title {
+
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
 }

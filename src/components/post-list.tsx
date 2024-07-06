@@ -13,10 +13,11 @@ interface Post {
 const PostList = () => {
   const { data, isLoading, error } = useGetPostsQuery();
   const [currentTitle, setCurrentTitle] = useState("Post List");
+  const [nextTitle, setNextTitle] = useState<string | null>(null);
+  const [animate, setAnimate] = useState(false);
   const [intersectingPostId, setIntersectingPostId] = useState<number | null>(
     null
   );
-  const [animate, setAnimate] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -28,11 +29,13 @@ const PostList = () => {
             setIntersectingPostId(Number(postId));
             const postTitle = entry.target.getAttribute("data-title");
             if (postTitle) {
+              setNextTitle(postTitle);
               setAnimate(true);
               setTimeout(() => {
                 setCurrentTitle(postTitle);
                 setAnimate(false);
-              }, 500); 
+                setNextTitle(null);
+              }, 500); // 애니메이션을 500ms 동안 유지
             }
           }
         }
@@ -42,7 +45,7 @@ const PostList = () => {
     observer.current = new IntersectionObserver(handleIntersection, {
       root: null,
       rootMargin: "0px",
-      threshold: 0.5, 
+      threshold: 0.5,
     });
 
     const elements = document.querySelectorAll(".post-item");
@@ -53,24 +56,29 @@ const PostList = () => {
     };
   }, [data]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
-  const posts = data?.map((post: Post) => ({
-    id: post.id,
-    title: post.title,
-  }));
-
   return (
     <div className="flex flex-col h-full">
       <div className="sticky top-0 z-10 p-4 bg-gray-200">
-        <h1 className={`text-xl font-bold ${animate ? "animate-title" : ""}`}>
+        <h1
+          className={`text-xl font-bold absolute ${
+            animate ? "animate-title" : ""
+          }`}
+        >
           {currentTitle}
         </h1>
+        {
+          <h1
+            className={`text-xl font-bold absolute ${
+              animate ? "animate-next-title" : ""
+            }`}
+          >
+            {nextTitle}
+          </h1>
+        }
       </div>
       <div className="flex-1 overflow-y-auto">
         <ul>
-          {posts?.map((post: Post) => (
+          {data?.map((post: Post) => (
             <li
               key={post.id}
               className={`mb-2 post-item h-20 ${
