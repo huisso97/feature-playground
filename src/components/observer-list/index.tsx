@@ -19,16 +19,18 @@ const ObserverList = ({ data }: ObserverListProps) => {
   const observer = useRef<IntersectionObserver | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const postRefs = useRef<Map<number, PostType>>(new Map());
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const postId = entry.target.getAttribute("data-id");
-          if (postId) {
-            setIntersectingPostId(Number(postId));
-            const postTitle = entry.target.getAttribute("data-title");
-            if (postTitle && postTitle !== currentTitle) {
+          const postElement = entry.target as HTMLElement;
+          const postId = Number(postElement.id.split("-")[1]);
+          const post = postRefs.current.get(postId);
+          if (post) {
+            setIntersectingPostId(postId);
+            if (post.title !== currentTitle) {
               setIsTransitioning(true);
 
               if (timeoutRef.current) {
@@ -36,9 +38,9 @@ const ObserverList = ({ data }: ObserverListProps) => {
               }
 
               timeoutRef.current = setTimeout(() => {
-                setCurrentTitle(postTitle);
+                setCurrentTitle(post.title);
                 setIsTransitioning(false);
-              }, 300); // 트랜지션 시간과 일치
+              }, 300);
             }
           }
         }
@@ -101,11 +103,13 @@ const ObserverList = ({ data }: ObserverListProps) => {
           {data?.map((post) => (
             <li
               key={post.id}
+              id={`post-${post.id}`}
               className={`post-item ${
                 intersectingPostId === post.id ? "bg-yellow-200" : ""
               }`}
-              data-id={post.id}
-              data-title={post.title}
+              ref={(el) => {
+                if (el) postRefs.current.set(post.id, post);
+              }}
             >
               <div className="print-header" style={{ display: "none" }}>
                 <h1 className="text-xl font-bold">{post.title}</h1>
