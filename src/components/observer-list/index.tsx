@@ -1,19 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useGetPostsQuery } from "@/query/post";
+import { PostType } from "@/types/post";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
-import "./post-list.css";
+import "./observer-list.css";
 
-interface Post {
-  id: number;
-  title: string;
-  body: string;
+interface ObserverListProps {
+  data: PostType[];
 }
 
-const PostList = () => {
-  const { data, isLoading, error } = useGetPostsQuery();
+const ObserverList = ({ data }: ObserverListProps) => {
   const [currentTitle, setCurrentTitle] = useState("Post List");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [intersectingPostId, setIntersectingPostId] = useState<number | null>(
@@ -85,7 +82,7 @@ const PostList = () => {
           <h1
             className={`text-xl font-bold absolute transition-all duration-300 ${
               isTransitioning
-                ? "opacity-0 -translate-x-2"
+                ? "opacity-0 translate-x-2"
                 : "opacity-100 translate-x-0"
             }`}
           >
@@ -101,7 +98,7 @@ const PostList = () => {
       </div>
       <div className="flex-1 overflow-y-auto" ref={printRef}>
         <ul className="post-list">
-          {data?.map((post: Post) => (
+          {data?.map((post) => (
             <li
               key={post.id}
               className={`post-item ${
@@ -125,4 +122,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default ObserverList;
