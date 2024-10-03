@@ -1,40 +1,72 @@
+/**
+ * @see https://typescript-exercises.github.io/#exercise=12&file=%2Fnode_modules%2Fstats%2Findex.js
+ */
+
 type Comparator<T> = (a: T, b: T) => number;
 
 type GetIndex = <T>(input: T[], comparator: Comparator<T>) => number;
-export const getMaxIndex: GetIndex = (input, comparator) => {
-  return input.reduce((maxIndex, current, index) => {
-    return comparator(input[maxIndex], current) > 0 ? maxIndex : index;
-  }, 0);
-};
-export const getMinIndex: GetIndex = (input, comparator) => {
-  return input.reduce((minIndex, current, index) => {
-    return comparator(input[minIndex], current) < 0 ? minIndex : index;
-  }, 0);
-};
-export const getMedianIndex: GetIndex = (input, comparator) => {
-  const sortedInput = input.sort(comparator);
-  const middleIndex = Math.floor(sortedInput.length / 2);
-  return middleIndex;
-};
-
 type GetElement = <T>(input: T[], comparator: Comparator<T>) => T | null;
-export const getMaxElement: GetElement = (input, comparator) => {
-  const maxIndex = getMaxIndex(input, comparator);
-  return maxIndex !== -1 ? input[maxIndex] : null;
-};
-export const getMinElement: GetElement = (input, comparator) => {
-  const minIndex = getMinIndex(input, comparator);
-  return minIndex !== -1 ? input[minIndex] : null;
-};
-export const getMedianElement: GetElement = (input, comparator) => {
-  const medianIndex = getMedianIndex(input, comparator);
-  return medianIndex !== -1 ? input[medianIndex] : null;
-};
-
-export const getAverageValue = <T>(
+type GetAverageValue = <T>(
   input: T[],
   getValue: (item: T) => number,
-) => {
-  const sum = input.reduce((acc, item) => acc + getValue(item), 0);
-  return sum / input.length;
+) => number | null;
+
+export const getMaxIndex: GetIndex = (input, comparator) => {
+  if (input.length === 0) {
+    return -1;
+  }
+  var maxIndex = 0;
+  for (var i = 1; i < input.length; i++) {
+    if (comparator(input[i], input[maxIndex]) > 0) {
+      maxIndex = i;
+    }
+  }
+  return maxIndex;
+};
+
+export const getMaxElement: GetElement = (input, comparator) => {
+  var index = getMaxIndex(input, comparator);
+  return index === -1 ? null : input[index];
+};
+
+export const getMinIndex: GetIndex = (input, comparator) => {
+  if (input.length === 0) {
+    return -1;
+  }
+  var maxIndex = 0;
+  for (var i = 1; i < input.length; i++) {
+    if (comparator(input[maxIndex], input[i]) > 0) {
+      maxIndex = i;
+    }
+  }
+  return maxIndex;
+};
+
+export const getMinElement: GetElement = (input, comparator) => {
+  var index = getMinIndex(input, comparator);
+  return index === -1 ? null : input[index];
+};
+
+export const getMedianIndex: GetIndex = (input, comparator) => {
+  if (input.length === 0) {
+    return -1;
+  }
+  var data = input.slice().sort(comparator);
+  return input.indexOf(data[Math.floor(data.length / 2)]);
+};
+
+export const getMedianElement: GetElement = (input, comparator) => {
+  var index = getMedianIndex(input, comparator);
+  return index === -1 ? null : input[index];
+};
+
+export const getAverageValue: GetAverageValue = (input, getValue) => {
+  if (input.length === 0) {
+    return null;
+  }
+  return (
+    input.reduce(function (result, item) {
+      return result + getValue(item);
+    }, 0) / input.length
+  );
 };
