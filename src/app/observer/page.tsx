@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import ObserverList from "@/components/observer-list";
-import { useGetPostsQuery } from "@/query/post";
+import ObserverList from '@/components/observer/observer-list';
+import { useGetPostsQuery } from '@/query/post';
 
 const Observer = () => {
   const { data } = useGetPostsQuery();
