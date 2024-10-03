@@ -1,8 +1,7 @@
 import { SiteHeader } from '@/components/common/site-header';
-import './globals.css';
 import { ThemeProvider } from '@/components/common/theme-provider';
-import { cn } from '@/lib/utils';
 import QueryClientProvider from '@/query/query-client-provider';
+import './globals.css';
 
 export default function RootLayout({
   children,
@@ -11,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='ko'>
-      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
+      <body className='min-h-screen bg-background'>
         <QueryClientProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
             <div className='relative flex min-h-screen flex-col'>

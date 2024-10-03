@@ -29,7 +29,7 @@ export function MainNav({ items }: MainNavProps) {
                   className={cn(
                     'flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground/60',
                     item.disabled && 'cursor-not-allowed opacity-80',
-                    pathname === item.href && 'text-foreground',
+                    pathname.includes(item.href) && 'text-foreground',
                   )}
                 >
                   {item.title}
