@@ -7,12 +7,17 @@ const Home = () => {
         <ListCard
           href='/observer'
           title='Observer'
-          description='Observer로 동적 애니메이션 기능을 볼 수 있습니다.'
+          description='Observer 패턴 구현'
         />
         <ListCard
           href='/react-feature'
           title='React Feature'
-          description='React Feature들을 볼 수 있습니다.'
+          description='React Feature 구현'
+        />
+        <ListCard
+          href='/type-exercise'
+          title='Type Exercise'
+          description='Type Exercise 문제 풀이'
         />
       </div>
     </div>

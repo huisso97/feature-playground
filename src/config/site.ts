@@ -16,6 +16,10 @@ export const siteConfig = {
       title: 'React Feature',
       href: '/react-feature',
     },
+    {
+      title: 'Type Exercise',
+      href: '/type-exercise',
+    },
   ],
   links: {
     github: 'https://github.com/huisso97',
