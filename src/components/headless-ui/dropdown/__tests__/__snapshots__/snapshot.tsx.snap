@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders homepage unchanged 1`] = `
+<div>
+  <div
+    aria-expanded="false"
+    class="dropdown"
+    role="combobox"
+  >
+    <div
+      class="trigger"
+      tabindex="0"
+    >
+      <span
+        class="selection"
+      >
+        Select an item...
+      </span>
+    </div>
+  </div>
+</div>
+`;

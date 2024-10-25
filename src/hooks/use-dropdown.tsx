@@ -31,18 +31,27 @@ export const useDropdown = (items: Item[]) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     switch (event.key) {
       case 'ArrowDown':
-        setIsOpen(true);
+        setSelectedIndex(prevIndex => (prevIndex + 1) % items.length);
+        return;
+
+      case 'Enter':
+        setSelectedItem(items[selectedIndex]);
+        toggleDropdown();
     }
   };
 
   const toggleDropdown = () => setIsOpen(isOpen => !isOpen);
 
+  const updateSelectedItem = (item: Item) => setSelectedItem(item);
+
   return {
     isOpen,
-    toggleDropdown,
-    handleKeyDown,
     selectedItem,
-    setSelectedItem,
     selectedIndex,
+    toggleDropdown,
+    getAriaAttributes,
+    updateSelectedItem,
+    handleKeyDown,
+    setSelectedIndex,
   };
 };

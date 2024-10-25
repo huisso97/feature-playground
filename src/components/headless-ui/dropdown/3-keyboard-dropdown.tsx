@@ -1,6 +1,4 @@
-import { useState } from 'react';
-
-import { useDropdown } from '@/hooks/use-dropdowm';
+import { useDropdown } from '@/hooks/use-dropdown';
 
 interface Item {
   icon: string;
@@ -22,15 +20,20 @@ type DropdownProps = {
 export const KeyboardDropdown = ({ items }: DropdownProps) => {
   const {
     isOpen,
-    toggleDropdown,
-    handleKeyDown,
     selectedItem,
-    setSelectedItem,
     selectedIndex,
+    toggleDropdown,
+    getAriaAttributes,
+    handleKeyDown,
+    setSelectedItem,
   } = useDropdown(items);
 
   return (
-    <div className='dropdown' onKeyDown={handleKeyDown}>
+    <div
+      className='dropdown'
+      onKeyDown={handleKeyDown}
+      {...getAriaAttributes()}
+    >
       <Trigger
         label={selectedItem ? selectedItem.text : 'Select an item...'}
         onClick={toggleDropdown}
