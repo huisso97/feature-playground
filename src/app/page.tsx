@@ -19,6 +19,11 @@ const Home = () => {
           title='Type Exercise'
           description='Type Exercise 문제 풀이'
         />
+        <ListCard
+          href='/headless-ui'
+          title='Headless UI'
+          description='Headless UI 구현'
+        />
       </div>
     </div>
   );
