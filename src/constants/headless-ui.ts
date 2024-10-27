@@ -1,4 +1,3 @@
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
 
 export const DROPDOWN_ITEMS = [
   {
@@ -17,3 +16,10 @@ export const DROPDOWN_ITEMS = [
     description: 'This is the third item',
   },
 ];
+
+
+export const ACCORDION_ITEMS = [
+  { id: 1, headingText: 'Heading 1', panel: 'Panel1 Content' },
+  { id: 2, headingText: 'Heading 2', panel: 'Panel2 Content' },
+  { id: 3, headingText: 'Heading 3', panel: 'Panel3 Content' },
+  ]

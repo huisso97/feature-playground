@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Item {
   icon: string;
@@ -18,40 +18,52 @@ interface Item {
  */
 export const useDropdown = (items: Item[]) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // 헬퍼 함수는 UI에 대한 일부 aria 속성을 반환할 수 있습니다.
-  const getAriaAttributes = () => ({
-    role: 'combobox',
-    'aria-expanded': isOpen,
-    'aria-activedescendant': selectedItem ? selectedItem.text : undefined,
-  });
+  const handleToggleDropdown = () => setIsOpen((prev) => !prev);
+  const handleCloseDropdown = () => setIsOpen(false);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeydown = (event: KeyboardEvent) => {
+    if (!isOpen) return;
+
     switch (event.key) {
-      case 'ArrowDown':
-        setSelectedIndex(prevIndex => (prevIndex + 1) % items.length);
-        return;
-
-      case 'Enter':
-        setSelectedItem(items[selectedIndex]);
-        toggleDropdown();
+      case "ArrowDown":
+        setSelectedIndex((prev) => (prev + 1) % items.length);
+        break;
+      case "ArrowUp":
+        setSelectedIndex((prev) => (prev - 1 + items.length) % items.length);
+        break;
+      case "Enter":
+        handleClickItem(selectedIndex);
+        break;
+      case 'Escape':
+        handleCloseDropdown();
+        break;
+      default:
+        break;
     }
   };
 
-  const toggleDropdown = () => setIsOpen(isOpen => !isOpen);
+  const handleClickItem = (index: number) => {
+    setSelectedIndex(index);
+    handleCloseDropdown();
+  };
 
-  const updateSelectedItem = (item: Item) => setSelectedItem(item);
+
+  useEffect(() => {
+    if (isOpen) document.addEventListener("keydown", handleKeydown);
+    else document.removeEventListener("keydown", handleKeydown);
+    return () => document.removeEventListener("keydown", handleKeydown);
+  }, [isOpen, selectedIndex]);
+
 
   return {
     isOpen,
-    selectedItem,
+    handleToggleDropdown,
+    handleCloseDropdown,
     selectedIndex,
-    toggleDropdown,
-    getAriaAttributes,
-    updateSelectedItem,
-    handleKeyDown,
-    setSelectedIndex,
+    handleClickItem,
+    dropdownRef,
   };
 };

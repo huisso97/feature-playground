@@ -1,9 +1,11 @@
 "use client";
 
-import { PostType } from "@/types/post";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+
+import Link from "next/link";
+
+import { PostType } from "@/types/post";
 import "./observer-list.css";
 
 interface ObserverListProps {

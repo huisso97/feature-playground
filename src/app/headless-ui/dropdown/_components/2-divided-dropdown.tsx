@@ -1,18 +1,16 @@
+'use client'
+
 import { useState } from 'react';
 
-interface Item {
-  icon: string;
-  text: string;
-  description: string;
-}
+import { DropdownItem } from '@/types/headless';
 
-type DropdownProps = {
-  items: Item[];
-};
+interface DropdownProps {
+  items: DropdownItem[];
+}
 
 export const DividedDropdown = ({ items }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedItem, setSelectedItem] = useState<DropdownItem | null>(null);
 
   return (
     <div className='dropdown'>
@@ -61,8 +59,8 @@ const DropdownMenu = ({
   items,
   onItemClick,
 }: {
-  items: Item[];
-  onItemClick: (item: Item) => void;
+  items: DropdownItem[];
+  onItemClick: (item: DropdownItem) => void;
 }) => {
   return (
     <div className='dropdown-menu'>

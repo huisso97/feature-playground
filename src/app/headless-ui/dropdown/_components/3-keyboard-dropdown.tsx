@@ -1,13 +1,10 @@
-import { useDropdown } from '@/hooks/use-dropdown';
+'use client'
 
-interface Item {
-  icon: string;
-  text: string;
-  description: string;
-}
+import { useDropdown } from '@/hooks/use-dropdown';
+import { DropdownItem } from '@/types/headless';
 
 type DropdownProps = {
-  items: Item[];
+  items: DropdownItem[];
 };
 
 /**
@@ -20,30 +17,32 @@ type DropdownProps = {
 export const KeyboardDropdown = ({ items }: DropdownProps) => {
   const {
     isOpen,
-    selectedItem,
+    handleToggleDropdown,
+    handleCloseDropdown,
+    handleClickItem,
     selectedIndex,
-    toggleDropdown,
-    getAriaAttributes,
-    handleKeyDown,
-    setSelectedItem,
+    dropdownRef,
   } = useDropdown(items);
 
   return (
-    <div
-      className='dropdown'
-      onKeyDown={handleKeyDown}
-      {...getAriaAttributes()}
-    >
-      <Trigger
-        label={selectedItem ? selectedItem.text : 'Select an item...'}
-        onClick={toggleDropdown}
-      />
+    <div ref={dropdownRef} onBlur={handleCloseDropdown}>
+      <button onClick={handleToggleDropdown} className='cursor-pointer'>
+        {selectedIndex >= 0 ? items[selectedIndex].text : 'Select an item'}
+      </button>
       {isOpen && (
-        <DropdownMenu
-          items={items}
-          selectedIndex={selectedIndex}
-          onItemClick={setSelectedItem}
-        />
+        <ul>
+          {items.map((item, index) => (
+            <li
+              key={index}
+              onClick={() => handleClickItem(index)}
+              className={`item-container ${
+                index === selectedIndex ? 'bg-gray-100' : ''
+              }`}
+            >
+              {item.text}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
@@ -81,9 +80,9 @@ const DropdownMenu = ({
   selectedIndex,
   onItemClick,
 }: {
-  items: Item[];
+  items: DropdownItem[];
   selectedIndex: number;
-  onItemClick: (item: Item) => void;
+  onItemClick: (item: DropdownItem) => void;
 }) => {
   return (
     <div className='dropdown-menu' role='listbox'>

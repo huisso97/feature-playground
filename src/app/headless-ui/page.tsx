@@ -1,24 +1,20 @@
-'use client';
-
-import { FirstDropdown } from '@/components/headless-ui/dropdown/1-first-dropdown';
-import { DividedDropdown } from '@/components/headless-ui/dropdown/2-divided-dropdown';
-import { KeyboardDropdown } from '@/components/headless-ui/dropdown/3-keyboard-dropdown';
-import { DROPDOWN_ITEMS } from '@/constants/headless-ui';
+import ListCard from "@/components/common/list-card";
 
 const HeadlessUI = () => {
-  return (
-    <div className='mx-auto flex h-[500px] w-full gap-20'>
-      <div className='h-[200px] w-full'>
-        <FirstDropdown />
+  return    <div className='list-container'>
+      <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+        <ListCard
+          href='/headless-ui/dropdown'
+          title='Dropdown'
+          description='Dropdown 구현'
+        />
+        <ListCard
+          href='/headless-ui/accordion'
+          title='Accordion'
+          description='Accordion 구현'
+        />
       </div>
-      <div className='h-[200px] w-full'>
-        <DividedDropdown items={DROPDOWN_ITEMS} />
-      </div>
-      <div className='h-[200px] w-full'>
-        <KeyboardDropdown items={DROPDOWN_ITEMS} />
-      </div>
-    </div>
-  );
+    </div>;
 };
 
 export default HeadlessUI;
