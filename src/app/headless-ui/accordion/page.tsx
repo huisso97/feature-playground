@@ -2,31 +2,33 @@
 
 import { useState } from "react";
 
-import { FirstAccordion } from "@/app/headless-ui/accordion/_components/1-first-accordion";
-import { ACCORDION_ITEMS } from "@/constants/headless-ui";
 
-import { SecondAccordion } from "./_components/2-second-accordion";
-import ThirdHeadlessAccordion from "./_components/3-headless-accordion";
+import { ACCORDION_ITEMS, EXTENDED_ACCORDION_ITEMS } from "@/constants/headless-ui";
+
+import FirstAccordion from "./_components/1-first-accordion";
+import SecondAccordion from "./_components/2-second-accordion";
+import CustomHeadlessAccordion from "./_components/3-custom-headless-accordion";
+import ShadcnAccordion from "./_components/4-shadcn-accordion";
 
 const Accordion = () => {
 
   const [activeIndex, setActiveIndex] = useState(0)
 
     return (
-        <div className='mx-auto flex h-[500px] w-[1000px] gap-20'>
+        <div className='mx-auto flex h-[500px] w-[1200px] gap-20'>
             <FirstAccordion
                 data={ACCORDION_ITEMS}
                 activeIndex={activeIndex}
                 onChange={setActiveIndex}
             />
             <SecondAccordion
-                data={ACCORDION_ITEMS}
+                data={EXTENDED_ACCORDION_ITEMS}
                 activeIndex={activeIndex}
                 onChange={setActiveIndex}
-                displaySomething='displaySomething'
                 doNothing={false}
         />
-        <ThirdHeadlessAccordion />
+        <CustomHeadlessAccordion data={EXTENDED_ACCORDION_ITEMS}/>
+        <ShadcnAccordion data={EXTENDED_ACCORDION_ITEMS}/>
         </div>
     )
 };

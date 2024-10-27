@@ -6,7 +6,7 @@ interface FirstAccordionProps {
   onChange: (index: number) => void;
 }
 
-export const FirstAccordion = ({ data, activeIndex, onChange }: FirstAccordionProps) => {
+ const FirstAccordion = ({ data, activeIndex, onChange }: FirstAccordionProps) => {
     return (
         <div className="w-[300px]">
             {data.map((item, idx) => (
@@ -19,4 +19,6 @@ export const FirstAccordion = ({ data, activeIndex, onChange }: FirstAccordionPr
             ))}
         </div>
     )
-}
+ }
+
+ export default FirstAccordion;

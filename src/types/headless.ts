@@ -9,3 +9,7 @@ export type AccordionItem = {
   headingText: string;
   panel: string;
 }
+
+export type ExtendedAccordionItem = AccordionItem & {
+  icon: string;
+}

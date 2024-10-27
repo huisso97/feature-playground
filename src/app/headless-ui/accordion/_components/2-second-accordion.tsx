@@ -1,34 +1,34 @@
-import { AccordionItem } from "@/types/headless";
+import { ExtendedAccordionItem } from "@/types/headless";
 
 
 interface SecondAccordionProps {
-  data: AccordionItem[];
+  data: ExtendedAccordionItem[];
   activeIndex: number;
   onChange: (index: number) => void;
-  displaySomething: string;
   doNothing: boolean;
 }
 
-export const SecondAccordion = ({ data, activeIndex, onChange, displaySomething, doNothing }: SecondAccordionProps) => {
+ const SecondAccordion = ({ data, activeIndex, onChange,  doNothing }: SecondAccordionProps) => {
 
   if (doNothing) return
 
   return (
     <div className="w-[300px]">
-      {data.map((item: any, idx: number) => (
+      {data?.map((item: ExtendedAccordionItem, idx: number) => (
         <div key={item.id}>
-          <button onClick={() => onChange(idx)}>
+          <button onClick={() => onChange(idx)} className="flex items-center gap-2">
             {item.headingText}
             {item.icon? (
-              <span className='someClassName'>{item.icon}</span>
+              <img src={item.icon} className='w-10 h-10'/>
             ) : null}
           </button>
           <div hidden={activeIndex !== idx}>
             {item.panel}
-            {displaySomething}
           </div>
         </div>
       ))}
     </div>
   )
-}
+ }
+
+ export default SecondAccordion;
