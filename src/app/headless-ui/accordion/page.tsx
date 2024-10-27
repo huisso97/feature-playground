@@ -7,7 +7,7 @@ import { ACCORDION_ITEMS, EXTENDED_ACCORDION_ITEMS } from "@/constants/headless-
 
 import FirstAccordion from "./_components/1-first-accordion";
 import SecondAccordion from "./_components/2-second-accordion";
-import CustomHeadlessAccordion from "./_components/3-custom-headless-accordion";
+import CompoundAccordion from "./_components/3-compound-accordion";
 import ShadcnAccordion from "./_components/4-shadcn-accordion";
 
 const Accordion = () => {
@@ -27,7 +27,7 @@ const Accordion = () => {
                 onChange={setActiveIndex}
                 doNothing={false}
         />
-        <CustomHeadlessAccordion data={EXTENDED_ACCORDION_ITEMS}/>
+        <CompoundAccordion data={EXTENDED_ACCORDION_ITEMS}/>
         <ShadcnAccordion data={EXTENDED_ACCORDION_ITEMS}/>
         </div>
     )

@@ -7,7 +7,7 @@ interface HeadlessAccordionProps {
   data: ExtendedAccordionItem[];
 }
 
-const CustomHeadlessAccordion = ({data}: HeadlessAccordionProps) => {
+const CompoundAccordion = ({data}: HeadlessAccordionProps) => {
   
   return (
     <Accordion className="w-[300px]">
@@ -23,4 +23,4 @@ const CustomHeadlessAccordion = ({data}: HeadlessAccordionProps) => {
   );
 };
 
-export default CustomHeadlessAccordion;
+export default CompoundAccordion;
