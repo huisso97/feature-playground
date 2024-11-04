@@ -3,6 +3,7 @@
 import { ReactNode } from 'react';
 
 import {
+  QueryCache,
   QueryClient,
   QueryClientProvider as RQQueryClientProvider,
 } from '@tanstack/react-query';
@@ -18,6 +19,13 @@ const QueryClientProvider = ({ children }: Props) => {
         refetchOnWindowFocus: false,
       },
     },
+    queryCache: new QueryCache({
+      onSuccess: (data: any, query: any) => {
+        if (query.meta.onSuccess) {
+          query.meta.onSuccess();
+        }
+      },
+    }),
   });
 
   return (
