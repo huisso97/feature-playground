@@ -24,6 +24,11 @@ const Home = () => {
           title='Headless UI'
           description='Headless UI 구현'
         />
+        <ListCard
+          href='/tanstack-query'
+          title='Tanstack Query'
+          description='Tanstack Query 구현'
+        />
       </div>
     </div>
   );
