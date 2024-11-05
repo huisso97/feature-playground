@@ -5,11 +5,17 @@ import { useGetPostsQuery } from '@/query/post';
 import ObserverList from './_components';
 
 const Observer = () => {
-  const { data } = useGetPostsQuery({ onSuccess: () => alert('1') });
+  const { data, isFetching } = useGetPostsQuery({
+    onSuccess: () => alert('1'),
+  });
 
   return (
     <div>
-      <ObserverList data={data} />
+      {isFetching ? (
+        <div>데이터를 불러오는 중입니다...</div>
+      ) : (
+        <ObserverList data={data ?? []} />
+      )}
     </div>
   );
 };

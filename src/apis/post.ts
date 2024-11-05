@@ -1,6 +1,8 @@
+import { Post } from '@/types/post';
+
 import axiosInstance from './axiosInstance';
 
-const getPostsAPI = async (): Promise<any> => {
+const getPostsAPI = async (): Promise<Post> => {
   const response = await axiosInstance.get(`/posts`);
 
   if (response.status === 200) return response.data;

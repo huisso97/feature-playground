@@ -2,11 +2,17 @@ import { useQuery } from '@tanstack/react-query';
 
 import { queryKeys } from './queryKeyStore';
 
-const useGetPostsQuery = ({ onSuccess }: { onSuccess: () => void }) => {
+const useGetPostsQuery = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError?: () => void;
+}) => {
   return useQuery({
     queryKey: queryKeys.post.list().queryKey,
     queryFn: queryKeys.post.list().queryFn,
-    meta: { onSuccess },
+    meta: { onSuccess, onError },
   });
 };
 

@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
-import { useReactToPrint } from "react-to-print";
+import { useEffect, useRef, useState } from 'react';
+import { useReactToPrint } from 'react-to-print';
 
-import Link from "next/link";
+import Link from 'next/link';
 
-import { PostType } from "@/types/post";
-import "./observer-list.css";
+import { Post, PostType } from '@/types/post';
+import './observer-list.css';
 
 interface ObserverListProps {
-  data: PostType[];
+  data: Post;
 }
 
 const ObserverList = ({ data }: ObserverListProps) => {
-  const [currentTitle, setCurrentTitle] = useState("Post List");
+  const [currentTitle, setCurrentTitle] = useState('Post List');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [intersectingPostId, setIntersectingPostId] = useState<number | null>(
-    null
+    null,
   );
   const observer = useRef<IntersectionObserver | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
@@ -25,10 +25,10 @@ const ObserverList = ({ data }: ObserverListProps) => {
 
   useEffect(() => {
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           const postElement = entry.target as HTMLElement;
-          const postId = Number(postElement.id.split("-")[1]);
+          const postId = Number(postElement.id.split('-')[1]);
           const post = postRefs.current.get(postId);
           if (post) {
             setIntersectingPostId(postId);
@@ -51,12 +51,12 @@ const ObserverList = ({ data }: ObserverListProps) => {
 
     observer.current = new IntersectionObserver(handleIntersection, {
       root: null,
-      rootMargin: "0px",
+      rootMargin: '0px',
       threshold: 0.5,
     });
 
-    const elements = document.querySelectorAll(".post-item");
-    elements.forEach((element) => observer.current?.observe(element));
+    const elements = document.querySelectorAll('.post-item');
+    elements.forEach(element => observer.current?.observe(element));
 
     return () => {
       observer.current?.disconnect();
@@ -78,16 +78,16 @@ const ObserverList = ({ data }: ObserverListProps) => {
   });
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="sticky top-0 z-10 p-4 bg-gray-200">
-        <div className="relative h-8">
-          {" "}
+    <div className='flex h-full flex-col'>
+      <div className='sticky top-0 z-10 bg-gray-200 p-4'>
+        <div className='relative h-8'>
+          {' '}
           {/* 고정 높이 추가 */}
           <h1
-            className={`text-xl font-bold absolute transition-all duration-300 ${
+            className={`absolute text-xl font-bold transition-all duration-300 ${
               isTransitioning
-                ? "opacity-0 translate-x-2"
-                : "opacity-100 translate-x-0"
+                ? 'translate-x-2 opacity-0'
+                : 'translate-x-0 opacity-100'
             }`}
           >
             {currentTitle}
@@ -95,30 +95,30 @@ const ObserverList = ({ data }: ObserverListProps) => {
         </div>
         <button
           onClick={handlePrint}
-          className="p-2 mt-2 text-white bg-blue-500 rounded"
+          className='mt-2 rounded bg-blue-500 p-2 text-white'
         >
           Print
         </button>
       </div>
-      <div className="flex-1 overflow-y-auto" ref={printRef}>
-        <ul className="post-list">
-          {data?.map((post) => (
+      <div className='flex-1 overflow-y-auto' ref={printRef}>
+        <ul className='post-list'>
+          {data?.map(post => (
             <li
               key={post.id}
               id={`post-${post.id}`}
               className={`post-item ${
-                intersectingPostId === post.id ? "bg-yellow-200" : ""
+                intersectingPostId === post.id ? 'bg-yellow-200' : ''
               }`}
-              ref={(el) => {
+              ref={el => {
                 if (el) postRefs.current.set(post.id, post);
               }}
             >
-              <div className="print-header" style={{ display: "none" }}>
-                <h1 className="text-xl font-bold">{post.title}</h1>
+              <div className='print-header' style={{ display: 'none' }}>
+                <h1 className='text-xl font-bold'>{post.title}</h1>
               </div>
-              <Link href={`/posts/${post.id}`} className="post-link">
-                <h2 className="post-title">{post.title}</h2>
-                <p className="post-body">{post.body}</p>
+              <Link href={`/posts/${post.id}`} className='post-link'>
+                <h2 className='post-title'>{post.title}</h2>
+                <p className='post-body'>{post.body}</p>
               </Link>
             </li>
           ))}
